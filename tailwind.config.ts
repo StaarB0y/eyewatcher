@@ -47,6 +47,15 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        scale: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.1)' },
+        },
+      },
+      animation: {
+        scale: 'scale 0.5s infinite alternate',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
