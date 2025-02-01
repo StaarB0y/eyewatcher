@@ -10,10 +10,10 @@ const Timer = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    let interval: number;
+    let intervalId: ReturnType<typeof setInterval>;
 
     if (isActive && timeLeft > 0) {
-      interval = setInterval(() => {
+      intervalId = setInterval(() => {
         setTimeLeft((time) => time - 1);
       }, 1000);
     } else if (timeLeft === 0) {
@@ -26,7 +26,7 @@ const Timer = () => {
       setIsActive(false);
     }
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalId);
   }, [isActive, timeLeft, toast]);
 
   const toggleTimer = () => {
