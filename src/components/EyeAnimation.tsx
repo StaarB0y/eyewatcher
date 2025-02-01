@@ -4,10 +4,29 @@ const EyeAnimation = ({ onComplete }: { onComplete: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Start animation after component mounts
-    setTimeout(() => setIsOpen(true), 500);
-    // Trigger completion callback after animation
-    setTimeout(onComplete, 2000);
+    const audio = new Audio('/sharingan-sound.mp3');
+    
+    const playAnimation = async () => {
+      // Start sound effect
+      try {
+        await audio.play();
+      } catch (error) {
+        console.log("Audio playback failed:", error);
+      }
+      
+      // Start animation after component mounts
+      setTimeout(() => setIsOpen(true), 500);
+      // Trigger completion callback after animation
+      setTimeout(onComplete, 2000);
+    };
+
+    playAnimation();
+
+    // Cleanup
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
   }, [onComplete]);
 
   return (
