@@ -82,21 +82,35 @@ const Timer = () => {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Timer Started! 🎉</DialogTitle>
+            <DialogTitle>Timer Started! 👁️</DialogTitle>
             <DialogDescription>
-              Time to focus on your work!
+              Your eyes will be monitored for the next 20 minutes
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-center p-6">
             <div className="relative w-32 h-32">
               <div 
-                className="absolute w-32 h-32 bg-primary rounded-full animate-bounce"
+                className="absolute w-32 h-32 rounded-full"
                 style={{
-                  animation: 'bounce 1s infinite, scale 0.5s infinite alternate',
+                  background: seconds % 1200 === 0 ? 'red' : 'white',
+                  border: '4px solid #666',
+                  transition: 'background-color 1s ease-in-out',
                 }}
               >
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-                  <div className="w-8 h-8 bg-primary-foreground rounded-full animate-ping" />
+                <div 
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full"
+                  style={{
+                    background: seconds % 1200 === 0 ? '#ff3333' : '#333',
+                    transition: 'background-color 1s ease-in-out',
+                  }}
+                >
+                  <div 
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full"
+                    style={{
+                      background: seconds % 1200 === 0 ? '#ff0000' : '#000',
+                      transition: 'background-color 1s ease-in-out',
+                    }}
+                  />
                 </div>
               </div>
             </div>
