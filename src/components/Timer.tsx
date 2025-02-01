@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, PauseCircle, PlayCircle } from "lucide-react";
+import { Eye, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -46,6 +46,12 @@ const Timer = () => {
     setIsActive(!isActive);
   };
 
+  const resetTimer = () => {
+    setIsActive(false);
+    setSeconds(0);
+    setShowDialog(false);
+  };
+
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -60,22 +66,32 @@ const Timer = () => {
           <Eye className="w-12 h-12 text-primary" />
           <h2 className="text-2xl font-semibold text-gray-800">Screen Time Timer</h2>
           <div className="text-4xl font-bold text-primary">{formatTime(seconds)}</div>
-          <Button 
-            onClick={toggleTimer}
-            className="w-full flex items-center justify-center space-x-2"
-          >
-            {isActive ? (
-              <>
-                <PauseCircle className="w-5 h-5" />
-                <span>Pause Timer</span>
-              </>
-            ) : (
-              <>
-                <PlayCircle className="w-5 h-5" />
-                <span>Start Timer</span>
-              </>
-            )}
-          </Button>
+          <div className="flex gap-2 w-full">
+            <Button 
+              onClick={toggleTimer}
+              className="flex-1 flex items-center justify-center space-x-2"
+            >
+              {isActive ? (
+                <>
+                  <PauseCircle className="w-5 h-5" />
+                  <span>Stop</span>
+                </>
+              ) : (
+                <>
+                  <PlayCircle className="w-5 h-5" />
+                  <span>Start</span>
+                </>
+              )}
+            </Button>
+            <Button 
+              onClick={resetTimer}
+              variant="outline"
+              className="flex items-center justify-center space-x-2"
+            >
+              <RotateCcw className="w-5 h-5" />
+              <span>Reset</span>
+            </Button>
+          </div>
         </div>
       </Card>
 
