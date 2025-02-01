@@ -5,46 +5,50 @@ import { Button } from "@/components/ui/button";
 import { Eye, PauseCircle, PlayCircle } from "lucide-react";
 
 const Timer = () => {
-  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
+  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
 
-    if (isActive && timeLeft > 0) {
+    if (isActive) {
       intervalId = setInterval(() => {
-        setTimeLeft((time) => time - 1);
+        setSeconds(prevSeconds => {
+          const newSeconds = prevSeconds + 1;
+          // Check if we've reached 20 minutes (1200 seconds)
+          if (newSeconds % 1200 === 0) {
+            toast({
+              title: "Time for an Eye Break! 👀",
+              description: "Look at something 20 feet away for 20 seconds",
+              duration: 20000,
+            });
+          }
+          return newSeconds;
+        });
       }, 1000);
-    } else if (timeLeft === 0) {
-      toast({
-        title: "Time for an Eye Break! 👀",
-        description: "Look at something 20 feet away for 20 seconds",
-        duration: 20000,
-      });
-      setTimeLeft(1200);
-      setIsActive(false);
     }
 
     return () => clearInterval(intervalId);
-  }, [isActive, timeLeft, toast]);
+  }, [isActive, toast]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  const formatTime = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
     <Card className="p-6 w-full max-w-sm mx-auto bg-white shadow-lg animate-fade">
       <div className="flex flex-col items-center space-y-4">
         <Eye className="w-12 h-12 text-primary" />
-        <h2 className="text-2xl font-semibold text-gray-800">20-20-20 Timer</h2>
-        <div className="text-4xl font-bold text-primary">{formatTime(timeLeft)}</div>
+        <h2 className="text-2xl font-semibold text-gray-800">Screen Time Timer</h2>
+        <div className="text-4xl font-bold text-primary">{formatTime(seconds)}</div>
         <Button 
           onClick={toggleTimer}
           className="w-full flex items-center justify-center space-x-2"
